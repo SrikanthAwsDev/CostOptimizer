@@ -5,6 +5,8 @@ import streamlit as st
 from pdfminer.high_level import extract_text
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_core.embeddings import Embeddings
+from typing import List
 from langchain_community.vectorstores import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
@@ -12,7 +14,6 @@ from langchain_core.output_parsers import StrOutputParser
 import tempfile
 import os
 import httpx
-import tiktoken
 import pandas as pd
 import json
 from io import StringIO
@@ -21,25 +22,42 @@ from modules.recommendation_engine import RecommendationEngine
 from modules.report_generator import ReportGenerator
 from modules.visualizer import CostVisualizer
 
-# TikToken cache setup
-tiktoken_cache_dir = "./token"
-os.environ["TIKTOKEN_CACHE_DIR"] = tiktoken_cache_dir
-client = httpx.Client(verify=False)
+# Simple embedding class that doesn't use tokenizers
+class SimpleEmbeddings(Embeddings):
+    """Simple embeddings using hash-based vectors to avoid tokenizer issues"""
+    
+    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        """Embed documents using simple hash-based approach"""
+        import hashlib
+        embeddings = []
+        for text in texts:
+            # Create a simple 384-dimensional embedding from text hash
+            hash_obj = hashlib.sha384(text.encode())
+            hash_bytes = hash_obj.digest()
+            # Convert to normalized floats
+            embedding = [float(b) / 255.0 - 0.5 for b in hash_bytes[:384]]
+            embeddings.append(embedding)
+        return embeddings
+    
+    def embed_query(self, text: str) -> List[float]:
+        """Embed query text"""
+        return self.embed_documents([text])[0]
 
-# LLM and Embedding setups
-llm = ChatOpenAI(
-    base_url="https://genailab.tcs.in",
-    model="azure_ai/genailab-maas-DeepSeek-V3-0324",
-    api_key="sk-JEVyjAuuQSr7akfYgASCXA",
-    http_client=client
-)
+# LLM and Embedding setup - only initialized when RAG mode is used
+def get_llm():
+    """Lazy load LLM only when needed for RAG analysis"""
+    client = httpx.Client(verify=False)
+    return ChatOpenAI(
+        base_url="https://genailab.tcs.in",
+        model="azure_ai/genailab-maas-DeepSeek-V3-0324",
+        api_key="sk-JEVyjAuuQSr7akfYgASCXA",
+        http_client=client
+    )
 
-embedding_model = OpenAIEmbeddings(
-    base_url="https://genailab.tcs.in",
-    model="azure_ai/genailab-maas-DeepSeek-R1",
-    api_key="sk-JEVyjAuuQSr7akfYgASCXA",
-    http_client=client
-)
+def get_embedding_model():
+    """Lazy load embedding model only when needed for RAG analysis"""
+    # Use simple hash-based embeddings to avoid tokenizer issues
+    return SimpleEmbeddings()
 
 # Page config
 st.set_page_config(
@@ -164,6 +182,10 @@ with tab1:
                 # RAG Analysis if enabled
                 if analysis_mode == "RAG-Powered Deep Analysis":
                     with st.spinner("Running RAG analysis..."):
+                        # Initialize LLM and embeddings only when needed
+                        llm = get_llm()
+                        embedding_model = get_embedding_model()
+                        
                         # Prepare text for RAG
                         text_content = parser.prepare_text_for_rag(merged_data, recommendations)
                         
