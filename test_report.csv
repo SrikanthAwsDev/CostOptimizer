@@ -1,0 +1,8 @@
+category,service,description,estimated_savings,priority,effort,action
+Reserved Instances,EC2,Purchase 1-year Reserved Instances for EC2,435.0849999999999,High,Low,Analyze usage patterns and purchase RIs for steady-state EC2 workloads
+Scheduling,EC2/RDS,Schedule non-production resources for business hours only,428.19075000000004,Medium,Low,Use AWS Instance Scheduler or Lambda to stop dev/test instances outside 9am-6pm
+Reserved Instances,RDS,Purchase 1-year Reserved Instances for RDS,381.1,High,Low,Analyze usage patterns and purchase RIs for steady-state RDS workloads
+Rightsizing,Amazon,Rightsize overprovisioned Amazon instances,310.775,High,Medium,Review utilization metrics and downsize instances with <40% CPU/memory usage
+Rightsizing,Amazon,Rightsize overprovisioned Amazon instances,190.55,High,Medium,Review utilization metrics and downsize instances with <40% CPU/memory usage
+Storage Optimization,S3,Implement S3 lifecycle policies for infrequent data,104.68499999999999,Medium,Low,"Move data >90 days old to S3-IA, >180 days to Glacier"
+Idle Resources,Load Balancers,Remove idle Load Balancers with no traffic,91.08,High,Low,Audit and delete unused Load Balancers

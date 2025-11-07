@@ -1,0 +1,21 @@
+Date,Service,Resource,Cost
+2024-10-01,Amazon Elastic Compute Cloud,i-1234567890,245.50
+2024-10-01,Amazon Relational Database Service,db-prod,189.75
+2024-10-01,Amazon Simple Storage Service,s3-bucket,67.30
+2024-10-01,Elastic Load Balancing,alb-prod,45.20
+2024-10-02,Amazon Elastic Compute Cloud,i-1234567890,248.90
+2024-10-02,Amazon Relational Database Service,db-prod,192.40
+2024-10-02,Amazon Simple Storage Service,s3-bucket,68.15
+2024-10-02,Elastic Load Balancing,alb-prod,46.00
+2024-10-03,Amazon Elastic Compute Cloud,i-1234567890,251.30
+2024-10-03,Amazon Relational Database Service,db-prod,188.90
+2024-10-03,Amazon Simple Storage Service,s3-bucket,69.50
+2024-10-03,Elastic Load Balancing,alb-prod,44.80
+2024-10-04,Amazon Elastic Compute Cloud,i-1234567890,247.60
+2024-10-04,Amazon Relational Database Service,db-prod,191.20
+2024-10-04,Amazon Simple Storage Service,s3-bucket,71.20
+2024-10-04,Elastic Load Balancing,alb-prod,45.50
+2024-10-05,Amazon Elastic Compute Cloud,i-1234567890,249.80
+2024-10-05,Amazon Relational Database Service,db-prod,190.50
+2024-10-05,Amazon Simple Storage Service,s3-bucket,72.80
+2024-10-05,Elastic Load Balancing,alb-prod,46.20
