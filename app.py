@@ -196,13 +196,12 @@ with tab1:
                         )
                         chunks = text_splitter.split_text(text_content)
                         
-                        # Embed and store
+                        # Embed and store (auto-persisted in Chroma 0.4+)
                         vectordb = Chroma.from_texts(
                             chunks,
                             embedding_model,
                             persist_directory="./chroma_index"
                         )
-                        vectordb.persist()
                         
                         # RAG QA Chain (langchain 1.0+ API)
                         retriever = vectordb.as_retriever()
