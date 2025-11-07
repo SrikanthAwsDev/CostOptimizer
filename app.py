@@ -100,7 +100,7 @@ with st.sidebar:
     savings_threshold = st.slider(
         "Minimum Savings Threshold ($)",
         min_value=0,
-        max_value=2000,
+        max_value=1000,
         value=10,
         step=10
     )
