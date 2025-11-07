@@ -94,8 +94,7 @@ with st.sidebar:
     st.header("⚙️ Configuration")
     analysis_mode = st.radio(
         "Analysis Mode",
-        ["Quick Analysis", "RAG-Powered Deep Analysis"],
-        help="RAG mode uses vector embeddings for intelligent insights"
+        ["Quick Analysis"]
     )
     
     savings_threshold = st.slider(
