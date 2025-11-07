@@ -13,4 +13,3 @@ tiktoken>=0.5.0
 httpx>=0.25.0
 python-dotenv>=1.0.0
 plotly>=5.17.0
-python>=3.12
